@@ -2,6 +2,8 @@ var Camera = function() {
     this.position = [-3.3002711295718457,0.2,0.690178281791961]
     this.lookAt = [-1, 0.5, 0];
 }
+
+// Based on AsciiTracer : https://github.com/trevlovett/AsciiTracer
 var AsciiTracer = function(width, height)
 {
         this.palette = ' .:;!|?1OC&@XEBW#\u2591\u2591\u2591\u2592\u2592\u2592\u2592\u2592\u2593\u2593\u2593\u2593\u2593\u2588'.split('').reverse();
@@ -366,6 +368,20 @@ var scene = {
                         radius:   0.5,
                         surface:  0, // shiny
                         centre:   [-1, 0.5, 1.5],
+                },
+                {    // sphere
+                        id:       2,
+                        type:     1,
+                        radius:   0.5,
+                        surface:  0, // shiny
+                        centre:   [-2, 1.5, 1.5],
+                },
+                {    // sphere
+                        id:       2,
+                        type:     1,
+                        radius:   0.5,
+                        surface:  0, // shiny
+                        centre:   [-3, 0.5, 1.5],
                 }
         ],
 
@@ -411,7 +427,7 @@ function render(res, tracer) {
             console.log("cam position = " + tracer.camera.position);
             dirty = true;
         }
-    }, 30);
+    }, 1);
 }
 
 http.createServer(function (req, res) {
