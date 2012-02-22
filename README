@@ -2,6 +2,8 @@ NodeTracer
 ==========
 Node.js doing real-time server-side text-mode raytracing, Comet-pushing frames to client.
 
+Based upon AsciiTracer ( https://github.com/trevlovett/AsciiTracer ) 
+
 Running
 =======
 
