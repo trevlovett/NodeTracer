@@ -376,13 +376,6 @@ var scene = {
                         surface:  0, // shiny
                         centre:   [-2, 1.5, 1.5],
                 },
-                {    // sphere
-                        id:       2,
-                        type:     1,
-                        radius:   0.5,
-                        surface:  0, // shiny
-                        centre:   [-3, 0.5, 1.5],
-                }
         ],
 
        
@@ -427,7 +420,7 @@ function render(res, tracer) {
             console.log("cam position = " + tracer.camera.position);
             dirty = true;
         }
-    }, 1);
+    }, 20);
 }
 
 http.createServer(function (req, res) {
@@ -458,4 +451,4 @@ http.createServer(function (req, res) {
 
 }).listen(1337, "127.0.0.1");
 
-console.log('Server running at http://127.0.0.1:1337/');
+console.log('Server running at http://127.0.0.1:1337/?launch=true');
