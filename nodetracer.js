@@ -96,37 +96,37 @@ AsciiTracer.prototype.writeImage = function(scene, width, height)
                 idx++;
         }
         return html.join('');
-},
+}
 
 AsciiTracer.prototype.setAntiAlias = function(amount) {
         this.antialias = amount > 0.0;
-},
+}
 
 AsciiTracer.prototype.setMotionBlur = function(amount) {
         this.motion_blur_amount = (amount < 0.0 ? 0.0 : amount > 1.0 ? 1.0 : amount) * 0.95;
-},
+}
 
 AsciiTracer.prototype.vectorAdd = function(v1, v2) {
         return [v1[0]+v2[0], v1[1]+v2[1], v1[2]+v2[2]];
-},
+}
 
 AsciiTracer.prototype.vectorSub = function(v1, v2) {
         return [v1[0]-v2[0], v1[1]-v2[1], v1[2]-v2[2]];
-},
+}
 
 AsciiTracer.prototype.vectorScale = function(v1, x) {
         return [v1[0]*x, v1[1]*x, v1[2]*x];
-},
+}
 
 AsciiTracer.prototype.vectorCross3 = function(v1, v2) {
         return [v1[1] * v2[2] - v1[2] * v2[1],
                 v1[2] * v2[0] - v1[0] * v2[2],
                 v1[0] * v2[1] - v1[1] * v2[0]];
-},
+}
 
 AsciiTracer.prototype.vectorLength = function(v1) {
         return Math.sqrt((v1[0]*v1[0]) + (v1[1]*v1[1]) + (v1[2]*v1[2]));
-},
+}
 
 AsciiTracer.prototype.vectorNormalize = function(v1) {
         var d = this.vectorLength(v1);
@@ -136,7 +136,7 @@ AsciiTracer.prototype.vectorNormalize = function(v1) {
                 fact /= d;
 
         return [v1[0]*fact, v1[1]*fact, v1[2]*fact];
-},
+}
 
 AsciiTracer.prototype.intersectPlane = function(start, dir, plane) {
         var n = plane.normal;
@@ -151,7 +151,7 @@ AsciiTracer.prototype.intersectPlane = function(start, dir, plane) {
                 return;
 
         return res;
-},
+}
 
 AsciiTracer.prototype.intersectSphere = function(start, dir, sphere) {
         var y = [];
@@ -170,7 +170,7 @@ AsciiTracer.prototype.intersectSphere = function(start, dir, sphere) {
         var sqrt = Math.sqrt(descriminant);
 
         return -beta - sqrt > 0 ? -beta - sqrt : -beta + sqrt > 0 ? -beta + sqrt : null;
-},
+}
 
 AsciiTracer.prototype.sample = function (scene, x, y) {
         var cam = this.camera;
@@ -190,7 +190,7 @@ AsciiTracer.prototype.sample = function (scene, x, y) {
         rayDir[2] *= fact;
 
         return this.traceRay(scene, cam.position, rayDir, null, 1, 0);
-},
+}
 
 AsciiTracer.prototype.shade = function(pos, dir, shape, scene, contrib, level) {
         var luma = null;
@@ -291,7 +291,7 @@ AsciiTracer.prototype.testRay = function (scene, src, dir, curShape) {
         }
 
         return res;
-},
+}
 
 AsciiTracer.prototype.traceRay = function (scene, src, dir, ignore, contrib, level) {
         level++;
@@ -320,7 +320,7 @@ AsciiTracer.prototype.traceRay = function (scene, src, dir, ignore, contrib, lev
                 return this.shade(tmp[1], dir, tmp[2], scene, contrib, level);
 
         return scene.background;
-},
+}
 
 AsciiTracer.prototype.traceTo = function(scene) {
         var cam = this.camera;
@@ -393,7 +393,7 @@ var url = require('url');
 // for now map tracers by IP. TODO; use sessions
 var tracers = {};
 
-// shit we need
+// boilerplate, styling + code to catch key signals and make the corresponding requests
 var boiler = "<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/><style type='text/css'> #screen { font-family: Courier New, Monospace; font-size: 6pt; font-weight: normal; position: relative; top: -4px; }</style><script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script><script type='text/javascript'>$(document).keydown(function (e) { var keyCode = e.keyCode || e.which, arrow = {left: 37, up: 38, right: 39, down: 40 }; switch(keyCode) { case arrow.left: $.get('/?dirx=0&diry=0&dirz=0.2'); break; case arrow.right: $.get('/?dirx=0&diry=0&dirz=-0.2'); break; case arrow.up: $.get('/?dirx=0.2&diry=0.0&dirz=0.0'); break; case arrow.down: $.get('/?dirx=-0.2&diry=0&dirz=0'); break; } });</script></head><body><div id='screen'></div>";
 
 var deccel = 0.93;
@@ -408,9 +408,8 @@ function render(res, tracer) {
             res.write(comet_script);
         }
             
-        // TODO within epsilon
         tracer_mag = tracer.vel[0]*tracer.vel[0]+tracer.vel[1]*tracer.vel[1]+tracer.vel[2]*tracer.vel[2]; 
-        if (tracer_mag < 0.001) {
+        if (tracer_mag < 0.0005) {
             dirty = false;
         }
         else { 
@@ -420,7 +419,7 @@ function render(res, tracer) {
             console.log("cam position = " + tracer.camera.position);
             dirty = true;
         }
-    }, 20);
+    }, 20); // adjust as needed
 }
 
 http.createServer(function (req, res) {
